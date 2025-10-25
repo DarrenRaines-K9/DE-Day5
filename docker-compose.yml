@@ -1,0 +1,30 @@
+# Defines all the containers to run
+services:
+  # Creates a service named "db"
+  db:
+    # Uses the latest PostgreSQL image from Docker Hub
+    image: postgres:16 
+    
+    # Auto-restarts container if it crashes
+    restart: always
+    
+    # Sets environment variables inside the container
+    environment:
+      POSTGRES_DB: de              # Creates a database named "de"
+      POSTGRES_USER: myuser         # Creates a user "myuser"
+      POSTGRES_PASSWORD: mypassword # Sets password for that user
+    
+    # Maps ports: host:container
+    # Makes Postgres accessible on your machine at localhost:5432
+    ports:
+      - "5432:5432"
+    
+    # Persists data so it survives container restarts/deletion
+    # Maps named volume "db_data" to where Postgres stores data
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+# Defines named volumes (persistent storage)
+# Docker manages this storage location on your machine
+volumes:
+  db_data:
