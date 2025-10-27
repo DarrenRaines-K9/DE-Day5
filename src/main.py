@@ -1,6 +1,7 @@
 import csv
 import psycopg2
 
+
 # Get logger
 def get_logger():
     pass
@@ -10,6 +11,9 @@ def get_logger():
 def process_csv():
     file_path = "data/sample.csv"
     mode = "r"
+
+    conn = postgres_connection()
+    cursor = conn.cursor()
     with open(file_path, mode) as csv_file:
         csv_reader = csv.reader(csv_file)
 
@@ -18,24 +22,24 @@ def process_csv():
         for row in csv_reader:
             print(row)
 
+    cursor.close()
+    conn.close()
+
 
 # Connect to Postgres
-def postgress_connection():
-    try:
-        conn = psycopg2.connect(
-        host ="localhost",
-        database ="mydatabase",
-        user ="myuser",
-        password ="mypassword"
-        )
-    except:
-    # TODO: log error
-    pass
+def postgres_connection():
+    conn = psycopg2.connect(
+        host="localhost",
+        database="mydatabase",
+        user="myuser",
+        password="mypassword",
+    )
+    return conn
+
 
 # For basic Main setup
 def main():
     process_csv()
-    postgress_connection()  
 
 
 if __name__ == "__main__":
